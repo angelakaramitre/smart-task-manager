@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Task;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class TaskController extends Controller
 {
@@ -32,4 +35,47 @@ public function store(Request $request)
         ->with('success', 'Task created successfully!');
 }
 
-}
+    public function edit(Task $task)
+    {
+        if ($task->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('tasks.edit', compact('task'));
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        if ($task->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $task->update([
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/tasks')->with('success', 'Task updated!');
+    }
+
+
+    public function destroy(Task $task)
+    {
+        if ($task->user_id !== Auth::user()->id) {
+            abort(403);
+        }
+
+        $task->delete();
+
+        return redirect('/tasks')->with('success', 'Task deleted!');
+    }
+
+} 
+
+
+ 
