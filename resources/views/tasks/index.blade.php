@@ -17,6 +17,11 @@
                     <p>No tasks yet.</p>
                 @endforelse
             </div>
+            <a href="{{ route('tasks.create') }}"
+            class="inline-block mb-4 bg-green-600 text-black px-4 py-2 rounded">
+            + New Task
+            </a>
         </div>
     </div>
+    
 </x-app-layout>
