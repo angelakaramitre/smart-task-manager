@@ -13,6 +13,15 @@
                             Status: {{ $task->status }} | Priority: {{ $task->priority }}
                         </p>
                     </div>
+                    <form action="{{ route('tasks.toggle', $task) }}" method="POST" style="display:inline">
+                       @csrf
+                       @method('PATCH')
+
+                       <button type="submit">
+                        {{ $task->completed ? 'Mark as Pending' : 'Mark as Done' }}
+                       </button>
+                    </form>
+
                 @empty
                     <p>No tasks yet.</p>
                 @endforelse

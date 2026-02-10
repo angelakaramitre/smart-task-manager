@@ -75,6 +75,20 @@ public function store(Request $request)
         return redirect('/tasks')->with('success', 'Task deleted!');
     }
 
+    public function toggle(Task $task)
+{
+    if ($task->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    $task->update([
+        'completed' => ! $task->completed,
+    ]);
+
+    return redirect('/tasks')->with('success', 'Task status updated!');
+}
+
+
 } 
 
 
