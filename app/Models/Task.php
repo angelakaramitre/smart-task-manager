@@ -15,9 +15,9 @@ class Task extends Model
     'title',
     'description',
     'priority',
-    'status',
     'due_date',
     'completed',
+    'reminder_at',
     ];
 
 }

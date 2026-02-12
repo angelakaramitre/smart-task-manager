@@ -27,6 +27,7 @@ public function store(Request $request)
         'description' => 'nullable|string',
         'priority' => 'required|in:low,medium,high',
         'due_date' => 'nullable|date',
+        'reminder_at' => 'nullable|date|after:now',
     ]);
 
     $request->user()->tasks()->create($validated);
@@ -53,11 +54,17 @@ public function store(Request $request)
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'priority' => 'required|in:low,medium,high',
+            'due_date' => 'nullable|date',
+            'reminder_at' => 'nullable|date|after:now',
         ]);
 
         $task->update([
             'title' => $request->title,
             'description' => $request->description,
+            'priority' => $request->priority,
+            'due_date' => $request->due_date,
+            'reminder_at' => $request->reminder_at,
         ]);
 
         return redirect('/tasks')->with('success', 'Task updated!');
